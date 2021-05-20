@@ -5,17 +5,17 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Python : Fichier actuel",
+            "name": "Python : Bot",
             "type": "python",
             "request": "launch",
-            "program": "${file}",
+            "program": "${workspaceFolder}/neobot/main.py",
             "console": "integratedTerminal"
         },
         {
-            "name": "Python : Fichier actuel et librairies",
+            "name": "Python : Bot avec librairies",
             "type": "python",
             "request": "launch",
-            "program": "${file}",
+            "program": "${workspaceFolder}/neobot/main.py",
             "justMyCode": false,
             "console": "integratedTerminal"
         }

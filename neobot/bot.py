@@ -1,30 +1,43 @@
 from __future__ import annotations
+import asyncio
 
-import os
-import sys
-from threading import ThreadError
-from dotenv import load_dotenv
+from functools import wraps
 
 from discord import Intents
 from discord.ext.commands import Bot
-from neobot.discord_typing_lib import Context
+from discord.guild import Guild
 
-load_dotenv()
-TOKEN = os.getenv('DISCORD_TOKEN')
-DEV_GUILD_ID = os.getenv('DISCORD_TEST_GUILD_ID')
-PERMS = os.getenv('DISCORD_PERMS_INTEGER')
+from neobot.context import Context
+from neobot.env import DEV_GUILD_ID
+
 
 intents: Intents = Intents.default()
 intents.members = True
 
 bot = Bot(command_prefix='!', intents=intents)
 
-test_guild = bot.get_guild(692122064219406376)
+TEST_GUILD = None
+
+def indev(func):
+
+    @wraps(func)
+    async def wrapper(ctx: Context) -> None:
+        if ctx.guild != TEST_GUILD:
+            await ctx.send("# Commande en développement -> non disponible #")
+            return
+        else:
+            await ctx.send("# Commande en développement #")
+            await func(ctx)
+            return
+
+    return wrapper
 
 
 @bot.event
 async def on_ready():
     print(f'{bot.user.name} has connected to Discord!')
+    global TEST_GUILD
+    TEST_GUILD = bot.get_guild(int(DEV_GUILD_ID))
 
 
 @bot.command(name="test", help="Teste la connection du bot à Discord")
@@ -33,9 +46,8 @@ async def hello_world(ctx: Context) -> None:
         await ctx.send("Bonjour le monde!")
 
 
-def main() -> None:
-    bot.run(TOKEN)
-
-
-if __name__ == '__main__':
-    main()
+@bot.command(name="testdev", help="Teste le mode développement")
+@indev
+async def hello_world_dev(ctx: Context) -> None:
+    async with ctx.channel.typing():
+        await ctx.send("Bonjour le monde de dev!")

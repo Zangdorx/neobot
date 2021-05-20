@@ -2,14 +2,12 @@ from __future__ import annotations
 
 from discord.ext.commands import Context as dContext
 from discord.channel import TextChannel
+from discord.guild import Guild
 
-class Context:
-    def __init__(self, ctx: dContext) -> None:
-        self.ctx = ctx
+class Context(dContext):
 
     @property
-    def channel(self) -> TextChannel:
-        return self.ctx.channel  # type: ignore
+    def channel(self) -> TextChannel: ...
 
-    def send(self, *args, **kwargs):
-        return self.ctx.send(*args, **kwargs)
+    @property
+    def guild(self) -> Guild: ...

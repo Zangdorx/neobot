@@ -3,3 +3,6 @@
 *.egg*
 neobot/.env
 __pycache__
+.pytest_cache
+.coverage
+htmlcov*
