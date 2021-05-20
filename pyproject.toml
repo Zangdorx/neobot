@@ -1,0 +1,10 @@
+[build-system]
+requires = [
+    "setuptools>=42",
+    "wheel"
+]
+build-backend = "setuptools.build_meta"
+
+[tool.pytest.ini_options]
+required_plugins = "pytest-cov>=2.11.1"
+addopts = "--cov=neobot --cov-report=html:htmlcov_neobot"

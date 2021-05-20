@@ -1,0 +1,5 @@
+*NOGIT*
+.venv
+*.egg*
+neobot/.env
+__pycache__
